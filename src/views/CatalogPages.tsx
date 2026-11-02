@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useParams } from 'next/navigation'
+import { ExternalLink } from 'lucide-react'
 import { Link } from '@/lib/navigation'
 import { EmptyState } from '@/components/EmptyState'
 import { PageHeader } from '@/components/PageHeader'
@@ -12,6 +13,14 @@ import { useContent } from '@/contexts/SiteContentProvider'
 import { useQuery } from '@/contexts/DataProvider'
 import { getProgramImage, getScholarshipImage, getServiceImage } from '@/lib/visuals'
 import { labelize } from '@/lib/utils'
+import { getPublicScholarship, getPublicUniversitySummary } from '@/lib/public-content'
+
+const officialUniversitySites: Record<string, string> = {
+  'seoul-national-university': 'https://en.snu.ac.kr/',
+  'korea-university': 'https://www.korea.edu/mbshome/mbs/en/',
+  'yonsei-university': 'https://www.yonsei.ac.kr/en_sc/',
+  kaist: 'https://www.kaist.ac.kr/en/',
+}
 
 export function UniversitiesPage() {
   const [q, setQ] = useState('')
@@ -20,7 +29,7 @@ export function UniversitiesPage() {
   const cities = [...new Set(useQuery('universities').items.map((u) => u.city))]
   return (
     <div>
-      <PageHeader kicker="Catalog" title="Korean universities" description="Filter by city and explore rankings, tuition, and intakes." />
+      <PageHeader kicker="Catalog" title="Korean universities" description="Search university profiles by name or city, then verify program details directly with each institution." />
       <div className="container py-10">
         <div className="mb-6 flex flex-col gap-3 sm:flex-row">
           <Input placeholder="Search universities" value={q} onChange={(e) => setQ(e.target.value)} />
@@ -41,7 +50,7 @@ export function UniversitiesPage() {
               <img src={uni.image} alt="" className="h-44 w-full object-cover" />
               <div className="p-5">
                 <h2 className="font-heading text-xl font-semibold">{uni.name}</h2>
-                <p className="text-sm text-muted-foreground">{uni.city} · {uni.ranking}</p>
+                <p className="text-sm text-muted-foreground">{uni.city}</p>
               </div>
             </Link>
           ))}
@@ -56,15 +65,17 @@ export function UniversityDetailPage() {
   const uni = useQuery('universities', { filters: { slug } }).items[0]
   const programs = useQuery('programs', { filters: uni ? { universityId: uni.id } : {} })
   if (!uni) return <div className="container py-16"><EmptyState title="University not found" /></div>
+  const officialSite = officialUniversitySites[uni.slug]
+  const summary = getPublicUniversitySummary(uni)
   return (
     <div>
-      <PageHeader kicker={uni.city} title={uni.name} description={uni.ranking} />
+      <PageHeader kicker={uni.city} title={uni.name} description={summary} />
       <div className="container grid gap-10 py-12 lg:grid-cols-3">
         <div className="lg:col-span-2 space-y-6">
-          <img src={uni.image} alt="" className="h-72 w-full rounded-lg object-cover" />
-          <p className="text-muted-foreground">{uni.overview}</p>
-          <section><h2 className="font-heading text-xl font-semibold">Requirements</h2><p className="mt-2 text-muted-foreground">{uni.requirements}</p></section>
-          <section><h2 className="font-heading text-xl font-semibold">Campus</h2><p className="mt-2 text-muted-foreground">{uni.campus}</p></section>
+          <img src={uni.image} alt={`${uni.name} campus`} className="h-72 w-full rounded-lg object-cover" />
+          <p className="text-muted-foreground">{summary}</p>
+          <section><h2 className="font-heading text-xl font-semibold">Admissions</h2><p className="mt-2 text-muted-foreground">Eligibility, language evidence, application materials, and selection vary by program and admissions cycle. Follow the current official international admissions guide.</p></section>
+          <section><h2 className="font-heading text-xl font-semibold">Campus and programs</h2><p className="mt-2 text-muted-foreground">Review the university’s official site for campus information, current program availability, and application details.</p></section>
           <section>
             <h2 className="mb-3 font-heading text-xl font-semibold">Programs</h2>
             {programs.items.map((p) => (
@@ -75,9 +86,12 @@ export function UniversityDetailPage() {
         <Card>
           <CardHeader><CardTitle>At a glance</CardTitle></CardHeader>
           <CardContent className="space-y-3 text-sm text-muted-foreground">
-            <p><strong className="text-foreground">Tuition:</strong> {uni.tuitionRange}</p>
-            <p><strong className="text-foreground">Deadlines:</strong> {uni.deadlines}</p>
-            <p><strong className="text-foreground">Intakes:</strong> {uni.intakes}</p>
+            <p>Program availability, eligibility, fees, and deadlines vary. Confirm current information with the university’s official admissions office.</p>
+            {officialSite ? (
+              <a href={officialSite} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-accent underline underline-offset-2">
+                Official university website <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+              </a>
+            ) : null}
             <Button asChild variant="accent" className="w-full"><Link to="/book-consultation">Discuss this university</Link></Button>
           </CardContent>
         </Card>
@@ -180,9 +194,11 @@ export function ScholarshipsPage() {
   const result = useQuery('scholarships', { sortKey: 'name' })
   return (
     <div>
-      <PageHeader kicker="Funding" title="Scholarships for Korea" description="Status badges and deadlines — always confirm official notices." />
+      <PageHeader kicker="Funding" title="Scholarships for Korea" description="Explore government and institution-based funding categories. Availability, eligibility, benefits, and deadlines change by cycle." />
       <div className="container grid gap-6 py-10 sm:grid-cols-2 lg:grid-cols-3">
-        {result.items.map((s) => (
+        {result.items.map((record) => {
+          const s = getPublicScholarship(record)
+          return (
           <Link key={s.id} to={`/scholarships/${s.slug}`} className="flex h-full flex-col overflow-hidden rounded-lg border bg-card">
             <img
               src={getScholarshipImage(s.slug)}
@@ -193,12 +209,13 @@ export function ScholarshipsPage() {
             <div className="flex flex-1 flex-col justify-between gap-3 p-5">
               <div>
                 <h2 className="font-heading text-lg font-semibold">{s.name}</h2>
-                <p className="mt-2 text-sm text-muted-foreground">{s.amount}</p>
+                <p className="mt-2 text-sm text-muted-foreground">{s.overview}</p>
               </div>
-              <StatusBadge value={s.status} />
+              <span className="text-sm font-medium text-accent">View category overview</span>
             </div>
           </Link>
-        ))}
+          )
+        })}
       </div>
     </div>
   )
@@ -206,22 +223,26 @@ export function ScholarshipsPage() {
 
 export function ScholarshipDetailPage() {
   const { slug } = useParams()
-  const item = useQuery('scholarships', { filters: { slug } }).items[0]
-  if (!item) return <div className="container py-16"><EmptyState title="Scholarship not found" /></div>
+  const scholarship = useQuery('scholarships', { filters: { slug } }).items[0]
+  if (!scholarship) return <div className="container py-16"><EmptyState title="Scholarship not found" /></div>
+  const item = getPublicScholarship(scholarship)
   return (
     <div>
-      <PageHeader kicker="Scholarship" title={item.name} description={item.amount} />
+      <PageHeader kicker="Scholarship information" title={item.name} description={item.overview} />
       <div className="container max-w-3xl space-y-6 py-12">
         <img
           src={getScholarshipImage(item.slug)}
           alt={`${item.name} funding`}
           className="h-72 w-full rounded-lg object-cover"
         />
-        <StatusBadge value={item.status} />
-        <p className="text-sm text-muted-foreground">Deadline: {item.deadline}</p>
-        <p>{item.overview}</p>
         <section><h2 className="font-heading text-xl">Eligibility</h2><p className="mt-2 text-muted-foreground">{item.eligibility}</p></section>
         <section><h2 className="font-heading text-xl">Coverage</h2><p className="mt-2 text-muted-foreground">{item.coverage}</p></section>
+        <p className="rounded-lg bg-muted/50 p-4 text-sm text-muted-foreground">Scholarship terms and deadlines change. Check the current official notice before applying; listing an award here does not imply a university partnership or a guaranteed result.</p>
+        {item.slug === 'global-korea-scholarship' ? (
+          <a href="https://www.studyinkorea.go.kr/" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-accent underline underline-offset-2">
+            Official Study in Korea scholarship information <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+          </a>
+        ) : null}
         <Button asChild variant="accent"><Link to="/book-consultation">Talk to a counselor</Link></Button>
       </div>
     </div>
@@ -279,38 +300,24 @@ export function ServiceDetailPage() {
 }
 
 export function SuccessStoriesPage() {
-  const result = useQuery('successStories')
   return (
     <div>
-      <PageHeader kicker="Outcomes" title="Success stories" />
-      <div className="container grid gap-6 py-12 md:grid-cols-2">
-        {result.items.map((s) => (
-          <Link key={s.id} to={`/success-stories/${s.slug}`} className="overflow-hidden rounded-lg border bg-card">
-            <img src={s.image} alt="" className="h-52 w-full object-cover" />
-            <div className="p-5">
-              <h2 className="font-heading text-xl font-semibold">{s.studentName}</h2>
-              <p className="text-sm text-muted-foreground">{s.university} · {s.program} · {s.year}</p>
-            </div>
-          </Link>
-        ))}
+      <PageHeader kicker="Student experience" title="Stories from students" description="We only publish student stories with their permission." />
+      <div className="container max-w-3xl py-12">
+        <Card>
+          <CardHeader><CardTitle>Our approach to student stories</CardTitle></CardHeader>
+          <CardContent className="space-y-4 text-sm leading-relaxed text-muted-foreground">
+            <p>We do not publish invented testimonials or use stock photography to represent students. This page will feature first-hand experiences only when students have reviewed and approved them for publication.</p>
+            <Button asChild variant="accent"><Link to="/book-consultation">Discuss your study plans</Link></Button>
+          </CardContent>
+        </Card>
       </div>
     </div>
   )
 }
 
 export function SuccessStoryDetailPage() {
-  const { slug } = useParams()
-  const item = useQuery('successStories', { filters: { slug } }).items[0]
-  if (!item) return <div className="container py-16"><EmptyState title="Story not found" /></div>
-  return (
-    <div>
-      <PageHeader title={item.studentName} description={`${item.university} · ${item.program}`} />
-      <div className="container max-w-3xl py-12">
-        <img src={item.image} alt="" className="mb-6 h-80 w-full rounded-lg object-cover" />
-        <div className="prose prose-slate max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: item.body }} />
-      </div>
-    </div>
-  )
+  return <div className="container py-16"><EmptyState title="Story not found" action={<Button asChild><Link to="/success-stories">Read about our approach</Link></Button>} /></div>
 }
 
 export function ResourcesPage() {
@@ -361,12 +368,17 @@ export function ResourceDetailPage() {
 }
 
 export function AboutPage() {
-  const team = useQuery('teamMembers', { sortKey: 'order' })
-  return <AboutBody team={team.items} />
+  const team = useQuery('teamMembers', { sortKey: 'order' }).items
+    .filter((member) => !['team_1', 'team_2', 'team_3'].includes(member.id))
+  return <AboutBody team={team} />
 }
 
 function AboutBody({ team }: { team: { id: string; name: string; role: string; bio: string; image: string }[] }) {
   const { get } = useContent()
+  const savedStory = get('about.story')
+  const story = savedStory.includes('was founded to make Korean higher education accessible')
+    ? 'Sanshin Education focuses on helping international students understand study options in South Korea. Students should confirm current requirements with each institution and relevant authority.'
+    : savedStory
   return (
     <div>
       <PageHeader title="About Sanshin Education" description={get('brand.tagline')} />
@@ -374,11 +386,11 @@ function AboutBody({ team }: { team: { id: string; name: string; role: string; b
         <section className="grid items-center gap-8 md:grid-cols-2">
           <div>
             <h2 className="text-2xl font-bold">Our story</h2>
-            <p className="mt-3 text-muted-foreground">{get('about.story')}</p>
+            <p className="mt-3 text-muted-foreground">{story}</p>
           </div>
           <img
             src="/images/yonsei.jpg"
-            alt="Seoul city streets near university campuses"
+            alt="Yonsei University campus in Seoul"
             className="h-64 w-full rounded-lg object-cover"
             loading="lazy"
           />
@@ -397,21 +409,23 @@ function AboutBody({ team }: { team: { id: string; name: string; role: string; b
             <CardContent className="text-sm text-muted-foreground">{get('about.values')}</CardContent>
           </Card>
         </div>
-        <section>
-          <h2 className="mb-6 text-2xl font-bold">Team</h2>
-          <div className="grid gap-6 sm:grid-cols-3">
-            {team.map((m) => (
-              <Card key={m.id}>
-                <img src={m.image} alt="" className="h-48 w-full object-cover" />
-                <CardHeader>
-                  <CardTitle className="text-lg">{m.name}</CardTitle>
-                  <p className="text-sm text-accent">{m.role}</p>
-                </CardHeader>
-                <CardContent className="text-sm text-muted-foreground">{m.bio}</CardContent>
-              </Card>
-            ))}
-          </div>
-        </section>
+        {team.length > 0 ? (
+          <section>
+            <h2 className="mb-6 text-2xl font-bold">Team</h2>
+            <div className="grid gap-6 sm:grid-cols-3">
+              {team.map((m) => (
+                <Card key={m.id}>
+                  <img src={m.image} alt="" className="h-48 w-full object-cover" />
+                  <CardHeader>
+                    <CardTitle className="text-lg">{m.name}</CardTitle>
+                    <p className="text-sm text-accent">{m.role}</p>
+                  </CardHeader>
+                  <CardContent className="text-sm text-muted-foreground">{m.bio}</CardContent>
+                </Card>
+              ))}
+            </div>
+          </section>
+        ) : null}
       </div>
     </div>
   )

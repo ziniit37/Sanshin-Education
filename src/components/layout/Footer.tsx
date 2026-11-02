@@ -2,8 +2,29 @@ import { Link } from '@/lib/navigation'
 import { Logo } from '@/components/Logo'
 import { useContent } from '@/contexts/SiteContentProvider'
 
+function displayContact(value: string) {
+  const normalized = value.trim()
+  if (
+    !normalized
+    || /placeholder|00-0000/i.test(normalized)
+    || normalized === 'hello@sanshin.education'
+    || normalized === 'Mon–Fri 9:00–18:00 KST'
+  ) return ''
+  return normalized
+}
+
 export function Footer() {
   const { get } = useContent()
+  const email = displayContact(get('contact.email'))
+  const phone = displayContact(get('contact.phone'))
+  const address = displayContact(get('contact.address'))
+  const hours = displayContact(get('contact.hours'))
+  const socialLinks = [
+    ['Instagram', get('social.instagram')],
+    ['LinkedIn', get('social.linkedin')],
+    ['Facebook', get('social.facebook')],
+  ].filter(([, url]) => /^https?:\/\//i.test(url))
+
   return (
     <footer className="border-t bg-primary text-primary-foreground">
       <div className="container grid gap-10 py-12 md:grid-cols-4">
@@ -14,10 +35,12 @@ export function Footer() {
         <div>
           <h4 className="mb-3 font-heading text-sm font-semibold">Explore</h4>
           <ul className="space-y-2 text-sm text-primary-foreground/75">
-            <li><Link to="/study-abroad/south-korea">South Korea</Link></li>
+            <li><Link to="/study-in-korea">Study in Korea</Link></li>
             <li><Link to="/universities">Universities</Link></li>
+            <li><Link to="/programs">Programs</Link></li>
             <li><Link to="/scholarships">Scholarships</Link></li>
-            <li><Link to="/success-stories">Success stories</Link></li>
+            <li><Link to="/student-life">Student life</Link></li>
+            <li><Link to="/resources">Resources</Link></li>
           </ul>
         </div>
         <div>
@@ -26,23 +49,26 @@ export function Footer() {
             <li><Link to="/about">About</Link></li>
             <li><Link to="/faq">FAQ</Link></li>
             <li><Link to="/contact">Contact</Link></li>
-            <li><Link to="/legal/privacy">Privacy</Link></li>
-            <li><Link to="/legal/terms">Terms</Link></li>
+            <li><Link to="/privacy">Privacy</Link></li>
+            <li><Link to="/terms">Terms</Link></li>
           </ul>
         </div>
         <div>
           <h4 className="mb-3 font-heading text-sm font-semibold">Contact</h4>
           <ul className="space-y-2 text-sm text-primary-foreground/75">
-            <li>{get('contact.email')}</li>
-            <li>{get('contact.phone')}</li>
-            <li>{get('contact.address')}</li>
-            <li>{get('contact.hours')}</li>
+            {email ? <li><a href={`mailto:${email}`}>{email}</a></li> : null}
+            {phone ? <li><a href={`tel:${phone.replace(/[^\d+]/g, '')}`}>{phone}</a></li> : null}
+            {address ? <li>{address}</li> : null}
+            {hours ? <li>{hours}</li> : null}
+            {!email && !phone && !address && !hours ? <li><Link to="/contact">Use the contact form</Link></li> : null}
           </ul>
-          <div className="mt-3 flex gap-3 text-sm">
-            <a href={get('social.instagram')}>Instagram</a>
-            <a href={get('social.linkedin')}>LinkedIn</a>
-            <a href={get('social.facebook')}>Facebook</a>
-          </div>
+          {socialLinks.length > 0 ? (
+            <ul className="mt-3 flex flex-wrap gap-3 text-sm">
+              {socialLinks.map(([label, url]) => (
+                <li key={label}><a href={url} target="_blank" rel="noreferrer">{label}</a></li>
+              ))}
+            </ul>
+          ) : null}
         </div>
       </div>
       <div className="border-t border-primary-foreground/10 py-4 text-center text-xs text-primary-foreground/60">

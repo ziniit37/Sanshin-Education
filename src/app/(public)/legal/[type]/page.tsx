@@ -1,3 +1,7 @@
 'use client'
 
-export { LegalPage as default } from '@/views/MiscPages'
+import { LegalPage } from '@/views/MiscPages'
+
+export default function Page() {
+  return <LegalPage />
+}

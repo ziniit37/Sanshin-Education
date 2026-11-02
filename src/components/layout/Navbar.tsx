@@ -8,13 +8,14 @@ import { useTheme } from '@/contexts/ThemeProvider'
 import { cn } from '@/lib/utils'
 
 const links = [
-  { to: '/study-abroad', label: 'Study in Korea' },
+  { to: '/study-in-korea', label: 'Study in Korea' },
   { to: '/universities', label: 'Universities' },
   { to: '/programs', label: 'Programs' },
-  { to: '/scholarships', label: 'Scholarships' },
   { to: '/services', label: 'Services' },
+  { to: '/scholarships', label: 'Scholarships' },
   { to: '/resources', label: 'Resources' },
-  { to: '/about', label: 'About' },
+  { to: '/about', label: 'About us' },
+  { to: '/contact', label: 'Contact' },
 ]
 
 function NavItems({ onClick }: { onClick?: () => void }) {
@@ -47,7 +48,7 @@ export function Navbar() {
     <header className="sticky top-0 z-40 glass">
       <div className="container flex h-16 items-center justify-between gap-4">
         <Logo />
-        <nav className="hidden items-center gap-5 lg:flex">
+        <nav className="hidden items-center gap-4 xl:flex">
           <NavItems />
         </nav>
         <div className="flex items-center gap-2">
@@ -61,23 +62,23 @@ export function Navbar() {
               </Link>
             </Button>
           ) : (
-            <Button asChild variant="outline" size="sm" className="hidden sm:inline-flex">
+            <Button asChild variant="outline" size="sm" className="hidden 2xl:inline-flex">
               <Link to="/login">Sign in</Link>
             </Button>
           )}
-          <Button asChild variant="accent" size="sm">
-            <Link to="/book-consultation">Book consultation</Link>
+          <Button asChild variant="accent" size="sm" className="hidden sm:inline-flex">
+            <Link to="/book-consultation">Book a Consultation</Link>
           </Button>
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Open menu">
+              <Button variant="ghost" size="icon" className="xl:hidden" aria-label="Open menu">
                 <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="flex flex-col gap-4 pt-12">
               <NavItems />
-              <Button asChild variant="outline">
-                <Link to="/contact">Contact</Link>
+              <Button asChild variant="accent">
+                <Link to="/book-consultation">Book a Consultation</Link>
               </Button>
             </SheetContent>
           </Sheet>
