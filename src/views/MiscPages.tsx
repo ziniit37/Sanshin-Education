@@ -16,7 +16,7 @@ import { useContent } from '@/contexts/SiteContentProvider'
 import { useToast } from '@/contexts/ToastProvider'
 import { sanitizeHtml } from '@/lib/utils'
 import { sendFormEmail } from '@/lib/form-email'
-import { DEFAULT_CONTACT_PHONE } from '@/lib/content-defaults'
+import { DEFAULT_CONTACT_EMAIL, DEFAULT_CONTACT_PHONE } from '@/lib/content-defaults'
 import type { Appointment } from '@/lib/types'
 
 export function FaqPage() {
@@ -56,7 +56,7 @@ export function FaqPage() {
 export function ContactPage() {
   const { toast } = useToast()
   const { get } = useContent()
-  const contactEmail = get('contact.email').trim()
+  const contactEmail = get('contact.email').trim() || DEFAULT_CONTACT_EMAIL
   const contactPhone = get('contact.phone').trim() || DEFAULT_CONTACT_PHONE
   const contactAddress = get('contact.address').trim()
   const officeHours = get('contact.hours').trim()
@@ -286,7 +286,7 @@ export function EligibilityPage() {
 export function BookConsultationPage() {
   const { user } = useAuth()
   const { toast } = useToast()
-  const { register, handleSubmit, setValue, watch, formState } = useForm({
+  const { register, handleSubmit, setValue, watch, reset, formState } = useForm({
     defaultValues: {
       name: user?.name ?? '',
       email: user?.email ?? '',
@@ -324,6 +324,16 @@ export function BookConsultationPage() {
               return
             }
             toast('Consultation requested', 'Your request was delivered. We will contact you by email to confirm a time.')
+            reset({
+              name: '',
+              email: '',
+              phone: '',
+              type: 'online',
+              scheduledAt: '',
+              notes: '',
+              privacyConsent: false,
+              website: '',
+            })
           })}
         >
           <div className="space-y-2"><Label>Name</Label><Input required {...register('name', { required: true })} /></div>

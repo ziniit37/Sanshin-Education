@@ -1,7 +1,7 @@
 import { Link } from '@/lib/navigation'
 import { Logo } from '@/components/Logo'
 import { useContent } from '@/contexts/SiteContentProvider'
-import { DEFAULT_CONTACT_PHONE } from '@/lib/content-defaults'
+import { DEFAULT_CONTACT_EMAIL, DEFAULT_CONTACT_PHONE } from '@/lib/content-defaults'
 
 function displayContact(value: string) {
   const normalized = value.trim()
@@ -16,7 +16,7 @@ function displayContact(value: string) {
 
 export function Footer() {
   const { get } = useContent()
-  const email = displayContact(get('contact.email'))
+  const email = displayContact(get('contact.email') || DEFAULT_CONTACT_EMAIL)
   const phone = displayContact(get('contact.phone') || DEFAULT_CONTACT_PHONE)
   const address = displayContact(get('contact.address'))
   const hours = displayContact(get('contact.hours'))

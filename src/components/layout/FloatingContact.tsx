@@ -3,13 +3,13 @@ import { useState } from 'react'
 import { Link } from '@/lib/navigation'
 import { Button } from '@/components/ui/button'
 import { useContent } from '@/contexts/SiteContentProvider'
-import { DEFAULT_CONTACT_PHONE } from '@/lib/content-defaults'
+import { DEFAULT_CONTACT_EMAIL, DEFAULT_CONTACT_PHONE } from '@/lib/content-defaults'
 
 export function FloatingContact() {
   const { get } = useContent()
   const [open, setOpen] = useState(false)
   const savedPhone = get('contact.phone').trim() || DEFAULT_CONTACT_PHONE
-  const savedEmail = get('contact.email').trim()
+  const savedEmail = get('contact.email').trim() || DEFAULT_CONTACT_EMAIL
   const phone = /placeholder|00-0000/i.test(savedPhone) ? '' : savedPhone.replace(/\s/g, '')
   const email = savedEmail === 'hello@sanshin.education' ? '' : savedEmail
 
