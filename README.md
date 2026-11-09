@@ -31,3 +31,4 @@ Authentication is currently a browser-local demo backed by `localStorage`, not a
 The contact endpoint applies a per-process IP rate limit and a honeypot. This in-memory limit is best-effort and resets when an instance restarts; configure an edge-level rate limit (such as a Vercel Firewall rule) before production to enforce limits consistently across serverless instances.
 
 The privacy and terms pages are editable drafts and require review by the business owner and qualified counsel before publication. Add only verified contact and social details in the admin content settings.
+# Sanshin-Education
