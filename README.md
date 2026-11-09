@@ -16,7 +16,7 @@ Copy `.env.example` to `.env.local` and add the Resend values below plus the can
 1. Import this project into Replit and install dependencies with `npm install`.
 2. In Replit **Secrets**, add `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `RESEND_TO_EMAIL`, and `RESEND_APPOINTMENT_TO_EMAIL`.
    - `RESEND_API_KEY` is the private API key from Resend.
-   - `RESEND_FROM_EMAIL` can use Resend's `onboarding@resend.dev` test sender for testing, which can only deliver to the email address verified on your Resend account. For production or delivery to other recipients, use a sender address on a domain verified with Resend, such as `Sanshin Global Education <forms@your-verified-domain.com>`.
+   - `RESEND_FROM_EMAIL` must use a sender address on a domain verified with Resend, such as `Sanshin Global Education <forms@mail.sanshineducation.com>`.
    - `RESEND_TO_EMAIL` is the address that should receive form submissions.
    - `RESEND_APPOINTMENT_TO_EMAIL` receives consultation and appointment requests.
    - Set `NEXT_PUBLIC_SITE_URL` to the canonical deployed origin (for example, `https://www.example.com`) so metadata, sitemap, and robots use the correct host. Sitemap and robots fall back to the incoming request origin if this is omitted.
