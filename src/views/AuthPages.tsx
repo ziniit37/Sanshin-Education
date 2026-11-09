@@ -130,7 +130,7 @@ export function ForgotPasswordPage() {
   const { requestPasswordReset } = useAuth()
   const { toast } = useToast()
   const { register, handleSubmit } = useForm<{ email: string }>()
-  const [link, setLink] = useState<string | null>(null)
+  const [emailSent, setEmailSent] = useState(false)
 
   return (
     <div>
@@ -143,17 +143,34 @@ export function ForgotPasswordPage() {
             toast('Unable to reset', result.error)
             return
           }
-          setLink(`/reset-password?token=${result.token}`)
+          try {
+            const response = await fetch('/api/auth/reset-password', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email: values.email, token: result.token }),
+            })
+            const responseBody: unknown = await response.json()
+            if (!response.ok) {
+              const message =
+                typeof responseBody === 'object'
+                && responseBody !== null
+                && 'error' in responseBody
+                && typeof responseBody.error === 'string'
+                  ? responseBody.error
+                  : 'We could not send your reset email. Please try again shortly.'
+              toast('Unable to send reset email', message)
+              return
+            }
+            setEmailSent(true)
+          } catch {
+            toast('Unable to send reset email', 'We could not send your reset email. Please try again shortly.')
+          }
         })}
       >
         <div className="space-y-2"><Label>Email</Label><Input type="email" required {...register('email')} /></div>
         <Button type="submit" variant="accent">Send reset link</Button>
       </form>
-      {link ? (
-        <p className="mt-4 text-sm">
-          Demo email link: <Link className="text-accent" to={link}>{link}</Link>
-        </p>
-      ) : null}
+      {emailSent ? <p className="mt-4 text-sm text-muted-foreground">If an account exists for that address, a password reset link has been emailed.</p> : null}
     </div>
   )
 }

@@ -1,9 +1,11 @@
 import type { SiteContent } from '@/lib/types'
 
+export const DEFAULT_CONTACT_PHONE = '+82 10-2185-8650'
+
 export const CONTENT_DEFAULTS: Omit<SiteContent, 'id'>[] = [
   { key: 'brand.name', value: 'Sanshin Education', group: 'brand', label: 'Brand name' },
   { key: 'brand.tagline', value: 'Your pathway to studying in South Korea', group: 'brand', label: 'Tagline' },
-  { key: 'contact.phone', value: '', group: 'contact', label: 'Phone' },
+  { key: 'contact.phone', value: DEFAULT_CONTACT_PHONE, group: 'contact', label: 'Phone' },
   { key: 'contact.email', value: '', group: 'contact', label: 'Email' },
   { key: 'contact.address', value: '', group: 'contact', label: 'Address' },
   { key: 'contact.hours', value: '', group: 'contact', label: 'Office hours' },

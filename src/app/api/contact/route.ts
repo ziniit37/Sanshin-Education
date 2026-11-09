@@ -147,8 +147,9 @@ export async function POST(request: Request) {
     )
   }
 
-  const { RESEND_API_KEY, RESEND_FROM_EMAIL, RESEND_TO_EMAIL } = process.env
-  if (!RESEND_API_KEY || !RESEND_FROM_EMAIL || !RESEND_TO_EMAIL) {
+  const { RESEND_API_KEY, RESEND_FROM_EMAIL, RESEND_TO_EMAIL, RESEND_APPOINTMENT_TO_EMAIL } = process.env
+  const recipient = type === 'appointment' ? RESEND_APPOINTMENT_TO_EMAIL : RESEND_TO_EMAIL
+  if (!RESEND_API_KEY || !RESEND_FROM_EMAIL || !recipient) {
     return fail('Email is not configured yet. Please contact the site administrator.', 503)
   }
 
@@ -161,7 +162,7 @@ export async function POST(request: Request) {
     const resend = new Resend(RESEND_API_KEY)
     const { error } = await resend.emails.send({
       from: RESEND_FROM_EMAIL,
-      to: RESEND_TO_EMAIL,
+      to: recipient,
       replyTo,
       subject: `Sanshin website: ${submissionSubjects[type]} (${values['Form source']})`,
       text,

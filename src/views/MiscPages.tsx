@@ -16,6 +16,7 @@ import { useContent } from '@/contexts/SiteContentProvider'
 import { useToast } from '@/contexts/ToastProvider'
 import { sanitizeHtml } from '@/lib/utils'
 import { sendFormEmail } from '@/lib/form-email'
+import { DEFAULT_CONTACT_PHONE } from '@/lib/content-defaults'
 import type { Appointment } from '@/lib/types'
 
 export function FaqPage() {
@@ -56,7 +57,7 @@ export function ContactPage() {
   const { toast } = useToast()
   const { get } = useContent()
   const contactEmail = get('contact.email').trim()
-  const contactPhone = get('contact.phone').trim()
+  const contactPhone = get('contact.phone').trim() || DEFAULT_CONTACT_PHONE
   const contactAddress = get('contact.address').trim()
   const officeHours = get('contact.hours').trim()
   const verifiedEmail = contactEmail && contactEmail !== 'hello@sanshin.education' ? contactEmail : ''

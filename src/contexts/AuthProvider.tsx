@@ -147,7 +147,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       requestPasswordReset: async (email) => {
         const match = getDb().users.find((u) => u.email.toLowerCase() === email.toLowerCase())
         if (!match) return { error: 'No account found for that email.' }
-        const token = uid('rst')
+        const token = crypto.randomUUID()
         setDb((current) => ({
           ...current,
           authMeta: {
