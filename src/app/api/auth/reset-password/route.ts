@@ -94,7 +94,7 @@ export async function POST(request: Request) {
     const { error } = await resend.emails.send({
       from: RESEND_FROM_EMAIL,
       to: email,
-      subject: 'Reset your Sanshin Education password',
+      subject: 'Reset your Sanshin Global Education password',
       text: `Use this link to reset your password. It expires in 30 minutes:\n\n${resetUrl}\n\nIf you did not request a password reset, you can ignore this email.`,
       html: `<p>Use the link below to reset your password. It expires in 30 minutes.</p><p><a href="${escapedResetUrl}">Reset your password</a></p><p>If you did not request a password reset, you can ignore this email.</p>`,
     })

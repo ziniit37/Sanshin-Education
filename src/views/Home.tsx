@@ -91,7 +91,7 @@ export function HomePage() {
             </h1>
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-primary-foreground/85">
               Discover universities, explore scholarships, and take the next step toward studying in South Korea with
-              personalized guidance from Sanshin Education.
+              personalized guidance from Sanshin Global Education.
             </p>
             <p className="mt-5 max-w-lg text-sm text-primary-foreground/75">
               Get help comparing study options and understanding the application process—without promises of admission,
@@ -402,7 +402,7 @@ export function HomePage() {
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-gold">Take the next step</p>
           <h2 className="mt-3 max-w-2xl text-3xl font-bold md:text-5xl">Ready to begin your journey to Korea?</h2>
           <p className="mt-4 max-w-xl text-primary-foreground/80">
-            Your study goals deserve a clear plan. Connect with Sanshin Education and explore your next steps.
+            Your study goals deserve a clear plan. Connect with Sanshin Global Education and explore your next steps.
           </p>
           <Button asChild variant="gold" size="lg" className="mt-7">
             <Link to="/book-consultation">Speak with an advisor <ArrowRight className="h-4 w-4" /></Link>
@@ -463,7 +463,7 @@ export function HomePage() {
             </div>
             <label className="flex items-start gap-2 text-xs text-muted-foreground">
               <input type="checkbox" className="mt-0.5 h-4 w-4 accent-accent" checked={consent} onChange={(event) => setConsent(event.target.checked)} required />
-              <span>I agree that Sanshin Education may use my information to respond to this request. See the <Link to="/privacy" className="text-accent underline">Privacy Policy</Link>.</span>
+              <span>I agree that Sanshin Global Education may use my information to respond to this request. See the <Link to="/privacy" className="text-accent underline">Privacy Policy</Link>.</span>
             </label>
           </form>
         </div>

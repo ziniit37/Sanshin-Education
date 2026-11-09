@@ -113,7 +113,7 @@ export function ContactPage() {
               </div>
               <label className="flex items-start gap-2 text-sm text-muted-foreground">
                 <input type="checkbox" className="mt-1 h-4 w-4 accent-accent" required {...register('privacyConsent', { required: true })} />
-                <span>I agree that Sanshin Education may use my information to respond to this inquiry. See the <Link to="/privacy" className="text-accent underline">Privacy Policy</Link>.</span>
+                <span>I agree that Sanshin Global Education may use my information to respond to this inquiry. See the <Link to="/privacy" className="text-accent underline">Privacy Policy</Link>.</span>
               </label>
               <Button type="submit" variant="accent" disabled={formState.isSubmitting}>
                 {formState.isSubmitting ? 'Sending…' : 'Send'}
@@ -136,7 +136,7 @@ export function ContactPage() {
           </Card>
           <img
             src="https://images.unsplash.com/photo-1538485399081-7191377e8241?auto=format&fit=crop&w=1200&q=80"
-            alt="Seoul cityscape, home to Sanshin's Korea study guidance"
+            alt="Seoul cityscape, home to Sanshin Global Education's Korea study guidance"
             className="h-52 w-full rounded-lg object-cover"
             loading="lazy"
           />
@@ -177,7 +177,7 @@ export function NotFoundPage() {
     <div className="container py-24 text-center">
       <p className="text-sm font-medium text-accent">404</p>
       <h1 className="mt-2 text-4xl font-bold">Page not found</h1>
-      <p className="mt-3 text-muted-foreground">That link does not exist on the Sanshin Education site.</p>
+      <p className="mt-3 text-muted-foreground">That link does not exist on the Sanshin Global Education site.</p>
       <Button asChild className="mt-6" variant="accent"><Link to="/">Back home</Link></Button>
     </div>
   )
@@ -267,7 +267,7 @@ export function EligibilityPage() {
               </div>
               <label className="flex items-start gap-2 text-sm text-muted-foreground">
                 <input type="checkbox" className="mt-1 h-4 w-4 accent-accent" required {...register('privacyConsent', { required: true })} />
-                <span>I agree that Sanshin Education may use my information to assess and respond to this inquiry. See the <Link to="/privacy" className="text-accent underline">Privacy Policy</Link>.</span>
+                <span>I agree that Sanshin Global Education may use my information to assess and respond to this inquiry. See the <Link to="/privacy" className="text-accent underline">Privacy Policy</Link>.</span>
               </label>
             </>
           ) : null}
@@ -348,7 +348,7 @@ export function BookConsultationPage() {
           </div>
           <label className="flex items-start gap-2 text-sm text-muted-foreground">
             <input type="checkbox" className="mt-1 h-4 w-4 accent-accent" required {...register('privacyConsent', { required: true })} />
-            <span>I agree that Sanshin Education may use my information to respond to this request. See the <Link to="/privacy" className="text-accent underline">Privacy Policy</Link>.</span>
+            <span>I agree that Sanshin Global Education may use my information to respond to this request. See the <Link to="/privacy" className="text-accent underline">Privacy Policy</Link>.</span>
           </label>
           <Button type="submit" variant="accent" disabled={formState.isSubmitting}>
             {formState.isSubmitting ? 'Sending…' : 'Request appointment'}

@@ -10,22 +10,22 @@ const jakarta = Plus_Jakarta_Sans({ subsets: ['latin'], variable: '--font-headin
 export const metadata: Metadata = {
   metadataBase: process.env.NEXT_PUBLIC_SITE_URL ? new URL(process.env.NEXT_PUBLIC_SITE_URL) : undefined,
   title: {
-    default: 'Sanshin Education | Study in South Korea',
-    template: '%s | Sanshin Education',
+    default: 'Sanshin Global Education | Study in South Korea',
+    template: '%s | Sanshin Global Education',
   },
   description:
-    'Sanshin Education helps international students study in South Korea — university admissions, scholarships, visas, and pre-departure support.',
+    'Sanshin Global Education helps international students study in South Korea — university admissions, scholarships, visas, and pre-departure support.',
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    siteName: 'Sanshin Education',
-    title: 'Sanshin Education | Study in South Korea',
+    siteName: 'Sanshin Global Education',
+    title: 'Sanshin Global Education | Study in South Korea',
     description:
       'Explore Korean universities, programs, scholarships, and practical guidance for studying in South Korea.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Sanshin Education | Study in South Korea',
+    title: 'Sanshin Global Education | Study in South Korea',
     description:
       'Explore Korean universities, programs, scholarships, and practical guidance for studying in South Korea.',
   },

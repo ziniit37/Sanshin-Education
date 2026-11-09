@@ -377,11 +377,11 @@ function AboutBody({ team }: { team: { id: string; name: string; role: string; b
   const { get } = useContent()
   const savedStory = get('about.story')
   const story = savedStory.includes('was founded to make Korean higher education accessible')
-    ? 'Sanshin Education focuses on helping international students understand study options in South Korea. Students should confirm current requirements with each institution and relevant authority.'
+    ? 'Sanshin Global Education focuses on helping international students understand study options in South Korea. Students should confirm current requirements with each institution and relevant authority.'
     : savedStory
   return (
     <div>
-      <PageHeader title="About Sanshin Education" description={get('brand.tagline')} />
+      <PageHeader title="About Sanshin Global Education" description={get('brand.tagline')} />
       <div className="container max-w-4xl space-y-10 py-12">
         <section className="grid items-center gap-8 md:grid-cols-2">
           <div>

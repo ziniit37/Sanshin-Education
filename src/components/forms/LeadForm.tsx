@@ -174,7 +174,7 @@ export function LeadForm({
             {...register('privacyConsent', { required: 'Please agree before sending your inquiry.' })}
           />
           <span>
-            I agree that Sanshin Education may use my information to respond to this inquiry. See the{' '}
+            I agree that Sanshin Global Education may use my information to respond to this inquiry. See the{' '}
             <Link to="/privacy" className="text-accent underline underline-offset-2">Privacy Policy</Link>.
             {' '}<span aria-hidden="true">*</span>
           </span>

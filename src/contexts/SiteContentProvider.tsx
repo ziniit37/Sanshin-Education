@@ -9,13 +9,15 @@ interface SiteContentContextValue {
 const SiteContentContext = createContext<SiteContentContextValue | null>(null)
 
 const defaultsMap = Object.fromEntries(CONTENT_DEFAULTS.map((item) => [item.key, item.value]))
+const oldBrandName = 'Sanshin Education'
+const brandName = 'Sanshin Global Education'
 
 export function SiteContentProvider({ children }: { children: ReactNode }) {
   const { db } = useData()
   const map = useMemo(() => {
     const next = { ...defaultsMap }
     db?.siteContent.forEach((item) => {
-      next[item.key] = item.value
+      next[item.key] = item.value.replaceAll(oldBrandName, brandName)
     })
     return next
   }, [db])

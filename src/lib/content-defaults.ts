@@ -3,7 +3,7 @@ import type { SiteContent } from '@/lib/types'
 export const DEFAULT_CONTACT_PHONE = '+82 10-2185-8650'
 
 export const CONTENT_DEFAULTS: Omit<SiteContent, 'id'>[] = [
-  { key: 'brand.name', value: 'Sanshin Education', group: 'brand', label: 'Brand name' },
+  { key: 'brand.name', value: 'Sanshin Global Education', group: 'brand', label: 'Brand name' },
   { key: 'brand.tagline', value: 'Your pathway to studying in South Korea', group: 'brand', label: 'Tagline' },
   { key: 'contact.phone', value: DEFAULT_CONTACT_PHONE, group: 'contact', label: 'Phone' },
   { key: 'contact.email', value: '', group: 'contact', label: 'Email' },
@@ -26,7 +26,7 @@ export const CONTENT_DEFAULTS: Omit<SiteContent, 'id'>[] = [
   {
     key: 'home.hero_subheadline',
     value:
-      'Sanshin Education guides international students from first inquiry to enrollment — universities, scholarships, visas, and life in Korea.',
+      'Sanshin Global Education guides international students from first inquiry to enrollment — universities, scholarships, visas, and life in Korea.',
     group: 'home',
     label: 'Hero subheadline',
   },
@@ -40,7 +40,7 @@ export const CONTENT_DEFAULTS: Omit<SiteContent, 'id'>[] = [
   {
     key: 'about.story',
     value:
-      'Sanshin Education focuses on helping international students understand study options in South Korea. This site provides information about admissions, funding, and preparation; students should confirm current requirements with each institution and relevant authority.',
+      'Sanshin Global Education focuses on helping international students understand study options in South Korea. This site provides information about admissions, funding, and preparation; students should confirm current requirements with each institution and relevant authority.',
     group: 'about',
     label: 'Our story',
   },
@@ -72,7 +72,7 @@ export const CONTENT_DEFAULTS: Omit<SiteContent, 'id'>[] = [
   {
     key: 'legal.terms',
     value:
-      '<p><strong>Draft for business and legal review. Do not publish as finalized legal terms.</strong></p><h2>Information and guidance</h2><p>Website information is general and may change. Confirm program requirements, fees, deadlines, scholarship terms, and immigration rules with the relevant official institution or authority before acting.</p><h2>No decision guarantees</h2><p>Sanshin Education cannot guarantee admission, scholarships, employment, or visa approval. Decisions are made by universities, scholarship providers, employers, and government authorities.</p><h2>Business review required</h2><p>The business owner must add verified service terms, fees, cancellation and refund terms, governing law, and business contact details before publishing this page.</p>',
+      '<p><strong>Draft for business and legal review. Do not publish as finalized legal terms.</strong></p><h2>Information and guidance</h2><p>Website information is general and may change. Confirm program requirements, fees, deadlines, scholarship terms, and immigration rules with the relevant official institution or authority before acting.</p><h2>No decision guarantees</h2><p>Sanshin Global Education cannot guarantee admission, scholarships, employment, or visa approval. Decisions are made by universities, scholarship providers, employers, and government authorities.</p><h2>Business review required</h2><p>The business owner must add verified service terms, fees, cancellation and refund terms, governing law, and business contact details before publishing this page.</p>',
     group: 'legal',
     label: 'Terms of service',
   },

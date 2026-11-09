@@ -197,7 +197,7 @@ export function GuidancePage({ page }: { page: keyof typeof guides }) {
           <Card className="rounded-2xl bg-primary text-primary-foreground">
             <CardHeader><CardTitle className="text-lg">Want help planning?</CardTitle></CardHeader>
             <CardContent>
-              <p className="text-sm text-primary-foreground/80">Share your goals and explore your next steps with Sanshin Education.</p>
+              <p className="text-sm text-primary-foreground/80">Share your goals and explore your next steps with Sanshin Global Education.</p>
               <Button asChild variant="gold" className="mt-4 w-full">
                 <Link to="/book-consultation">Request a consultation <ArrowRight className="h-4 w-4" /></Link>
               </Button>

@@ -11,7 +11,7 @@ The Unsplash CDN images below are referenced in the project code. Unsplash's pub
 | Technology image | <https://images.unsplash.com/photo-1518770660439-4636190af475> | Not recorded in repository | Unsplash license; confirm photo identity and save the original source page before production |
 | Business / planning image | <https://images.unsplash.com/photo-1460925895917-afdab827c52f> | Not recorded in repository | Unsplash license; confirm photo identity and save the original source page before production |
 
-The following local JPEGs were already present in `public/images/`. Their original source, photographer, and license are not recorded in the repository. Treat these rights as **unverified** and obtain the source/permission documentation from the asset owner before production use. University names in filenames or alt text do not establish that an image depicts that institution or that the institution endorses Sanshin Education.
+The following local JPEGs were already present in `public/images/`. Their original source, photographer, and license are not recorded in the repository. Treat these rights as **unverified** and obtain the source/permission documentation from the asset owner before production use. University names in filenames or alt text do not establish that an image depicts that institution or that the institution endorses Sanshin Global Education.
 
 | Local asset | Photographer | License / next step |
 |---|---|---|

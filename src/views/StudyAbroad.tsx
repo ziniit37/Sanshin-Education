@@ -11,7 +11,7 @@ export function StudyAbroadPage() {
   const countries = useQuery('countries')
   return (
     <div>
-      <PageHeader kicker="Destinations" title="Study abroad in South Korea" description="Sanshin Education is a Korea-only consultancy. Explore the destination, then universities and programs." />
+      <PageHeader kicker="Destinations" title="Study abroad in South Korea" description="Sanshin Global Education is a Korea-only consultancy. Explore the destination, then universities and programs." />
       <div className="container py-12">
         {countries.loading ? <p>Loading…</p> : null}
         <div className="grid gap-6 md:grid-cols-2">
