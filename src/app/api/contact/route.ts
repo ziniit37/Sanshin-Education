@@ -169,11 +169,16 @@ export async function POST(request: Request) {
       html,
     })
     if (error) {
-      console.error('Resend rejected a form email:', error)
+      console.error(
+        `Resend rejected a form email (${error.name}, ${error.statusCode}): ${error.message}`,
+      )
       return fail('We could not deliver your message. Please try again shortly.', 502)
     }
   } catch (error) {
-    console.error('Resend form email failed:', error)
+    console.error(
+      'Resend form email failed:',
+      error instanceof Error ? { name: error.name, message: error.message } : String(error),
+    )
     return fail('We could not deliver your message. Please try again shortly.', 502)
   }
 
