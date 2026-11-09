@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-sans', display: 'swa
 const jakarta = Plus_Jakarta_Sans({ subsets: ['latin'], variable: '--font-heading', display: 'swap' })
 
 export const metadata: Metadata = {
-  metadataBase: process.env.NEXT_PUBLIC_SITE_URL ? new URL(process.env.NEXT_PUBLIC_SITE_URL) : undefined,
+  metadataBase: new URL('https://www.sanshineducation.com'),
   title: {
     default: 'Sanshin Global Education | Study in South Korea',
     template: '%s | Sanshin Global Education',
@@ -22,23 +22,35 @@ export const metadata: Metadata = {
     title: 'Sanshin Global Education | Study in South Korea',
     description:
       'Explore Korean universities, programs, scholarships, and practical guidance for studying in South Korea.',
+    images: [{ url: '/images/seoul-skyline.jpg', alt: 'Seoul skyline, South Korea' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Sanshin Global Education | Study in South Korea',
     description:
       'Explore Korean universities, programs, scholarships, and practical guidance for studying in South Korea.',
+    images: ['/images/seoul-skyline.jpg'],
   },
   icons: { icon: '/favicon.svg' },
 }
 
 const themeScript = `try{if(localStorage.getItem('sanshin.theme')==='dark')document.documentElement.classList.add('dark')}catch(e){}`
+const organizationStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'EducationalOrganization',
+  name: 'Sanshin Global Education',
+  url: 'https://www.sanshineducation.com/',
+  email: 'sanjidahmed0902@gmail.com',
+  telephone: '+82 10-2185-8650',
+  sameAs: ['https://www.facebook.com/Sanshinglobaleducation/'],
+}
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${jakarta.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationStructuredData) }} />
       </head>
       <body>
         <Providers>{children}</Providers>

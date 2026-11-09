@@ -1,11 +1,12 @@
 import type { Metadata } from 'next'
-import { GuidancePage } from '@/views/GuidancePages'
+import { StudentVisaGuidePage } from '@/views/ExpandedGuidancePages'
 
 export const metadata: Metadata = {
   title: 'Student Visa Guidance',
-  description: 'General information about D-2 degree study and D-4 training pathways, with links to official Korean immigration resources.',
+  description: 'Official-source overview of South Korea D-2 and D-4 student visa categories, common preparation items, and immigration links.',
+  alternates: { canonical: '/visa-guide' },
 }
 
 export default function VisaGuidancePage() {
-  return <GuidancePage page="visa" />
+  return <StudentVisaGuidePage />
 }

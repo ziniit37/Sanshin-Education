@@ -146,6 +146,21 @@ export function GuidancePage({ page }: { page: keyof typeof guides }) {
   return (
     <div>
       <PageHeader kicker={guide.kicker} title={guide.title} description={guide.description} />
+      {page === 'admissions' ? (
+        <section className="container grid gap-4 pt-8 sm:grid-cols-2 lg:grid-cols-4" aria-label="Admissions resources">
+          {[
+            ['2027 intake calendar', 'Compare published university application windows.', '/admissions/intakes'],
+            ['How to apply', 'Follow the steps from choosing a route to enrollment.', '/admissions/how-to-apply'],
+            ['Transfer admissions', 'Understand transfer, major changes, and credit review.', '/admissions/transfer'],
+            ['Graduate study', 'Plan a master’s, doctoral, or research application.', '/admissions/graduate'],
+          ].map(([title, description, href]) => (
+            <Link key={href} to={href} className="rounded-xl border bg-card p-4 transition-colors hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+              <h2 className="font-heading font-semibold">{title}</h2>
+              <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{description}</p>
+            </Link>
+          ))}
+        </section>
+      ) : null}
       {page === 'life' ? (
         <div className="container relative mt-10 h-64 overflow-hidden rounded-2xl md:h-96">
           <Image

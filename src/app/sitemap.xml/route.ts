@@ -1,10 +1,13 @@
 import { getSiteUrl } from '@/lib/site-url'
+import { PROGRAM_DIRECTORY, UNIVERSITY_DIRECTORY } from '@/lib/university-directory'
+import { STUDY_RESOURCES } from '@/lib/study-resources'
 
 export const dynamic = 'force-dynamic'
 
 const publicPaths = [
   '/',
   '/study-in-korea',
+  '/study-abroad',
   '/universities',
   '/universities/seoul-national-university',
   '/universities/korea-university',
@@ -14,18 +17,24 @@ const publicPaths = [
   '/services',
   '/scholarships',
   '/admissions',
-  '/visa-guidance',
+  '/admissions/intakes',
+  '/admissions/how-to-apply',
+  '/admissions/transfer',
+  '/admissions/graduate',
+  '/programs/korean-language',
+  '/study-pathways',
+  '/visa-guide',
   '/student-life',
-  '/cost-of-living',
+  '/study-in-korea/costs',
+  '/eligibility',
+  '/book-consultation',
   '/about',
   '/contact',
+  '/success-stories',
   '/resources',
-  '/resources/gks-vs-university-scholarships',
-  '/resources/d2-student-visa-documents',
-  '/resources/language-program-or-degree',
-  '/resources/korean-university-application-calendar',
-  '/resources/student-budget-checklist-south-korea',
-  '/resources/understanding-global-korea-scholarship',
+  ...UNIVERSITY_DIRECTORY.map((university) => `/universities/${university.slug}`),
+  ...PROGRAM_DIRECTORY.map((program) => `/programs/${program.slug}`),
+  ...STUDY_RESOURCES.map((resource) => `/resources/${resource.slug}`),
   '/faq',
   '/privacy',
   '/terms',
@@ -33,7 +42,7 @@ const publicPaths = [
 
 export function GET(request: Request) {
   const siteUrl = getSiteUrl(request)
-  const entries = publicPaths.map((path) => {
+  const entries = [...new Set(publicPaths)].map((path) => {
     const priority = path === '/' ? '1.0' : '0.7'
     const changeFrequency = path === '/' ? 'weekly' : 'monthly'
     return `<url><loc>${new URL(path, siteUrl).toString()}</loc><changefreq>${changeFrequency}</changefreq><priority>${priority}</priority></url>`

@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import { ArrowRight, CheckCircle2 } from 'lucide-react'
+import { FacebookMark } from '@/components/FacebookMark'
 import { useState } from 'react'
 import { Link } from '@/lib/navigation'
 import { FadeUp } from '@/components/FadeUp'
@@ -15,6 +16,8 @@ import { useToast } from '@/contexts/ToastProvider'
 import { sendFormEmail } from '@/lib/form-email'
 import { getProgramImage, getScholarshipImage, getServiceImage } from '@/lib/visuals'
 import { getPublicScholarship } from '@/lib/public-content'
+import { PROGRAM_DIRECTORY, UNIVERSITY_DIRECTORY } from '@/lib/university-directory'
+import { STUDY_RESOURCES } from '@/lib/study-resources'
 
 const steps = [
   { title: 'Share your goals', body: 'Tell us about your study interests, academic background, and preferred timing.' },
@@ -70,6 +73,16 @@ export function HomePage() {
   const scholarships = useQuery('scholarships', { pageSize: 3 })
   const posts = useQuery('blogPosts', { sortKey: 'publishedAt', sortDir: 'desc', pageSize: 3 })
   const services = useQuery('services', { pageSize: 4 })
+  const featuredUniversities = universities.items.length
+    ? universities.items.slice(0, 4)
+    : UNIVERSITY_DIRECTORY.slice(0, 4).map((university) => ({
+        id: university.slug,
+        slug: university.slug,
+        name: university.name,
+        city: university.city,
+        image: university.image,
+      }))
+  const featuredPrograms = programs.items.length ? programs.items : PROGRAM_DIRECTORY.slice(0, 4)
 
   return (
     <div>
@@ -90,8 +103,8 @@ export function HomePage() {
               Your Future Starts in South Korea.
             </h1>
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-primary-foreground/85">
-              Discover universities, explore scholarships, and take the next step toward studying in South Korea with
-              personalized guidance from Sanshin Global Education.
+              Explore Korean universities, scholarships, language programs, and international transfer opportunities.
+              Navigate the admissions process with guidance from Sanshin Global Education.
             </p>
             <p className="mt-5 max-w-lg text-sm text-primary-foreground/75">
               Get help comparing study options and understanding the application process—without promises of admission,
@@ -99,10 +112,10 @@ export function HomePage() {
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild variant="gold" size="lg">
-                <Link to="/universities">Explore universities <ArrowRight className="h-4 w-4" /></Link>
+                <Link to="/study-pathways">Find My Study Pathway <ArrowRight className="h-4 w-4" /></Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="border-primary-foreground/40 bg-primary/20 text-primary-foreground hover:bg-primary-foreground/10">
-                <Link to="#journey">How it works</Link>
+                <Link to="/admissions/intakes">Explore 2027 Admissions</Link>
               </Button>
             </div>
           </FadeUp>
@@ -113,6 +126,64 @@ export function HomePage() {
             </p>
             <LeadForm source="home_hero" compact submitLabel="Get my study plan" />
           </FadeUp>
+        </div>
+      </section>
+
+      <section className="border-b bg-card">
+        <div className="container py-12 md:py-16">
+          <div className="mb-7 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+            <div>
+              <p className="text-sm font-semibold text-accent">Plan ahead</p>
+              <h2 className="mt-2 font-heading text-3xl font-bold">Planning to study in Korea in 2027?</h2>
+              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+                Degree and language programs follow different calendars. Check official university notices before making application plans.
+              </p>
+            </div>
+            <Button asChild variant="link" className="justify-start px-0 sm:justify-end">
+              <Link to="/admissions/intakes">Explore upcoming deadlines <ArrowRight className="h-4 w-4" /></Link>
+            </Button>
+          </div>
+          <div className="grid gap-5 md:grid-cols-3">
+            {[
+              {
+                title: 'March 2027 university intake',
+                body: 'Spring degree admissions are set by each university and program. Some verified application rounds may already be closed.',
+                image: '/images/snu.jpg',
+                alt: 'University campus in South Korea',
+                href: '/admissions/intakes',
+                cta: 'Check spring schedules',
+              },
+              {
+                title: 'September 2027 university intake',
+                body: 'Fall applications commonly take place in spring, but dates vary. Follow official notices as they are published.',
+                image: '/images/yonsei.jpg',
+                alt: 'Campus buildings at a Korean university',
+                href: '/admissions/intakes',
+                cta: 'Follow fall updates',
+              },
+              {
+                title: '2027 Korean language programs',
+                body: 'University language institutes have separate term calendars, entry requirements, and application processes.',
+                image: '/images/seoul-skyline.jpg',
+                alt: 'Seoul skyline at dusk',
+                href: '/programs/korean-language',
+                cta: 'Explore language study',
+              },
+            ].map((item) => (
+              <Card key={item.title} className="overflow-hidden">
+                <div className="relative h-40">
+                  <Image src={item.image} alt={item.alt} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
+                </div>
+                <CardHeader><CardTitle className="text-lg">{item.title}</CardTitle></CardHeader>
+                <CardContent>
+                  <p className="text-sm leading-relaxed text-muted-foreground">{item.body}</p>
+                  <Button asChild variant="link" className="mt-3 justify-start px-0">
+                    <Link to={item.href}>{item.cta} <ArrowRight className="h-4 w-4" /></Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -143,21 +214,23 @@ export function HomePage() {
             <Link to="/universities">View all <ArrowRight className="h-4 w-4" /></Link>
           </Button>
         </FadeUp>
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {universities.items.slice(0, 4).map((uni) => (
+        <div className="flex snap-x snap-mandatory gap-5 overflow-x-auto pb-3" role="region" aria-label="Featured Korean universities">
+          {featuredUniversities.map((uni) => (
             <Link
               key={uni.id}
               to={`/universities/${uni.slug}`}
-              className="group overflow-hidden rounded-2xl border bg-card transition duration-200 hover:-translate-y-1 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="group min-w-[min(85vw,300px)] snap-start overflow-hidden rounded-2xl border bg-card transition duration-200 hover:-translate-y-1 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:min-w-[280px]"
             >
               <div className="relative h-44 overflow-hidden">
-                <Image
-                  src={uni.image}
-                  alt={`${uni.name} campus`}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  className="object-cover transition duration-300 group-hover:scale-105"
-                />
+                {uni.image ? (
+                  <Image
+                    src={uni.image}
+                    alt={`${uni.name} campus`}
+                    fill
+                    sizes="(max-width: 640px) 85vw, 280px"
+                    className="object-cover transition duration-300 group-hover:scale-105"
+                  />
+                ) : <div className="flex h-full items-end bg-gradient-to-br from-primary/10 via-accent/10 to-muted p-4"><span className="font-heading text-lg font-bold">{uni.city}</span></div>}
               </div>
               <div className="p-4">
                 <h3 className="font-heading font-semibold">{uni.name}</h3>
@@ -198,8 +271,8 @@ export function HomePage() {
             </Button>
           </FadeUp>
           <div className="grid gap-4 sm:grid-cols-2">
-            {programs.items.map((program) => (
-              <Card key={program.id} className="overflow-hidden rounded-2xl">
+            {featuredPrograms.map((program) => (
+                <Card key={program.slug} className="overflow-hidden rounded-2xl">
                 <div className="relative h-36">
                   <Image
                     src={getProgramImage(program.subject)}
@@ -290,6 +363,18 @@ export function HomePage() {
               </Card>
               )
             })}
+            {scholarships.items.length === 0 ? (
+              <Card className="overflow-hidden rounded-2xl">
+                <div className="relative h-40">
+                  <Image src={getScholarshipImage('global-korea-scholarship')} alt="Study resources for Korean government scholarships" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
+                </div>
+                <CardHeader><CardTitle className="text-lg">2027 Global Korea Scholarship</CardTitle></CardHeader>
+                <CardContent>
+                  <p className="text-sm leading-relaxed text-muted-foreground">The official undergraduate guidelines are published. Embassy and university application schedules differ; verify eligibility and benefits in the current files.</p>
+                  <Button asChild variant="link" className="mt-2 px-0"><Link to="/scholarships">Explore scholarship guidance <ArrowRight className="h-4 w-4" /></Link></Button>
+                </CardContent>
+              </Card>
+            ) : null}
           </div>
         </div>
       </section>
@@ -352,7 +437,7 @@ export function HomePage() {
           <Button asChild variant="link"><Link to="/resources">All resources <ArrowRight className="h-4 w-4" /></Link></Button>
         </div>
         <div className="grid gap-5 md:grid-cols-3">
-          {posts.items.map((post) => (
+          {posts.items.length > 0 ? posts.items.map((post) => (
             <Card key={post.id} className="overflow-hidden rounded-2xl">
               <div className="relative h-40">
                 <Image
@@ -369,6 +454,14 @@ export function HomePage() {
                 <Button asChild variant="link" className="mt-2 px-0">
                   <Link to={`/resources/${post.slug}`}>Read article <ArrowRight className="h-4 w-4" /></Link>
                 </Button>
+              </CardContent>
+            </Card>
+          )) : STUDY_RESOURCES.slice(0, 3).map((article) => (
+            <Card key={article.slug} className="rounded-2xl">
+              <CardHeader><p className="text-xs font-semibold uppercase tracking-wide text-accent">{article.category} · Reviewed {article.reviewedOn}</p><CardTitle className="text-lg">{article.title}</CardTitle></CardHeader>
+              <CardContent>
+                <p className="text-sm leading-relaxed text-muted-foreground">{article.excerpt}</p>
+                <Button asChild variant="link" className="mt-2 px-0"><Link to={`/resources/${article.slug}`}>Read guide <ArrowRight className="h-4 w-4" /></Link></Button>
               </CardContent>
             </Card>
           ))}
@@ -407,6 +500,14 @@ export function HomePage() {
           <Button asChild variant="gold" size="lg" className="mt-7">
             <Link to="/book-consultation">Speak with an advisor <ArrowRight className="h-4 w-4" /></Link>
           </Button>
+          <a
+            href="https://www.facebook.com/Sanshinglobaleducation/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-5 inline-flex items-center gap-2 rounded-md border border-primary-foreground/30 px-4 py-2 text-sm font-medium text-primary-foreground transition hover:-translate-y-0.5 hover:bg-primary-foreground/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+          >
+            <FacebookMark className="h-4 w-4" /> Follow Sanshin on Facebook
+          </a>
         </div>
       </section>
 

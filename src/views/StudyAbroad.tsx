@@ -1,3 +1,5 @@
+'use client'
+
 import { useParams } from 'next/navigation'
 import { Link } from '@/lib/navigation'
 import { PageHeader } from '@/components/PageHeader'

@@ -13,7 +13,11 @@ const allowedFields: Record<keyof typeof submissionSubjects, readonly string[]> 
     'Name', 'Email', 'Phone', 'Country of residence', 'Study level', 'Preferred intake',
     'Privacy consent', 'Website', 'Form source',
   ],
-  contact: ['Name', 'Email', 'Phone', 'Subject', 'Message', 'Privacy consent', 'Website', 'Form source'],
+  contact: [
+    'Name', 'Email', 'Phone', 'Subject', 'Message', 'Intended intake', 'Study level',
+    'Interested university or subject', 'Korean proficiency', 'Current university',
+    'Transfer interest', 'Country of residence', 'Privacy consent', 'Website', 'Form source',
+  ],
   eligibility: [
     'Name', 'Email', 'Phone', 'Nationality', 'Highest education', 'Intended intake',
     'GPA / percentage', 'English score', 'Annual budget (KRW)', 'Destination', 'Privacy consent',

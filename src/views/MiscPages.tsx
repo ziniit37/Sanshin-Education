@@ -1,5 +1,9 @@
+'use client'
+
 import { useMemo, useState } from 'react'
 import { useParams } from 'next/navigation'
+import { ArrowRight } from 'lucide-react'
+import { FacebookMark } from '@/components/FacebookMark'
 import { Link } from '@/lib/navigation'
 import { useForm } from 'react-hook-form'
 import { PageHeader } from '@/components/PageHeader'
@@ -48,6 +52,39 @@ export function FaqPage() {
             </Accordion>
           </section>
         ))}
+        <section>
+          <h2 className="mb-3 font-heading text-xl font-semibold">Planning a Korea application</h2>
+          <Accordion type="single" collapsible>
+            <AccordionItem value="faq-intake-dates">
+              <AccordionTrigger>Are application deadlines the same across Korean universities?</AccordionTrigger>
+              <AccordionContent> No. Dates and application rounds vary by university, degree, and department. Check the <Link className="text-accent underline" to="/admissions/intakes">source-linked intake calendar</Link>, then verify the current notice with the institution before applying.</AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="faq-language-program">
+              <AccordionTrigger>Does a Korean language program guarantee university admission?</AccordionTrigger>
+              <AccordionContent>No. Language training and degree admission have separate applications and requirements. Confirm the institute’s term and visa information, then review the degree program’s current academic and language criteria.</AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="faq-transfer-credit">
+              <AccordionTrigger>Will all of my previous university credits transfer?</AccordionTrigger>
+              <AccordionContent>No. The receiving university decides transfer eligibility and credit recognition. Ask the target department what transcripts, course descriptions, authentication, and review steps it requires. See <Link className="text-accent underline" to="/admissions/transfer">transfer guidance</Link>.</AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="faq-gks-status">
+              <AccordionTrigger>Are GKS eligibility and deadlines the same in every country?</AccordionTrigger>
+              <AccordionContent>No. Country instructions, track, participating universities, and application schedules can differ. Use the current <Link className="text-accent underline" to="/scholarships">official GKS scholarship notices</Link> and the relevant embassy or university guidance.</AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="faq-visa-change">
+              <AccordionTrigger>Does moving from a D-4 language program to a degree automatically change my visa?</AccordionTrigger>
+              <AccordionContent>No. A change of status or a new visa process may be necessary. Confirm the procedure for your nationality and circumstances with <a className="text-accent underline" href="https://www.hikorea.go.kr/" target="_blank" rel="noreferrer">Hi Korea</a> and the responsible Korean embassy or immigration authority.</AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="faq-work">
+              <AccordionTrigger>Can I rely on part-time work to pay all study costs?</AccordionTrigger>
+              <AccordionContent>No. Work may require prior permission and compliance with visa, school, and language conditions. Do not assume immediate or unrestricted employment; check current official immigration requirements and build a budget without guaranteed work income.</AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="faq-budget">
+              <AccordionTrigger>Are the tuition figures on the site exact university fees?</AccordionTrigger>
+              <AccordionContent>No. The budget tool uses official national averages for degree tuition as context and asks you to enter your own living-cost assumptions. Confirm exact fees with the selected university and review the <Link className="text-accent underline" to="/study-in-korea/costs">budget assumptions</Link>.</AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </section>
       </div>
     </div>
   )
@@ -64,12 +101,20 @@ export function ContactPage() {
   const verifiedPhone = contactPhone && !/placeholder|00-0000/i.test(contactPhone) ? contactPhone : ''
   const verifiedAddress = contactAddress && !/placeholder/i.test(contactAddress) ? contactAddress : ''
   const verifiedHours = officeHours && !/Mon–Fri 9:00–18:00 KST/.test(officeHours) ? officeHours : ''
+  const facebookUrl = get('social.facebook').trim() || 'https://www.facebook.com/Sanshinglobaleducation/'
   const { register, handleSubmit, reset, formState } = useForm<{
     name: string
     email: string
     phone?: string
     subject: string
     message: string
+    intendedIntake?: string
+    studyLevel?: string
+    interestedUniversityOrSubject?: string
+    koreanProficiency?: string
+    currentUniversity?: string
+    transferInterest?: string
+    countryOfResidence?: string
     privacyConsent: boolean
     website: string
   }>()
@@ -91,6 +136,13 @@ export function ContactPage() {
                     Phone: values.phone ?? '',
                     Subject: values.subject,
                     Message: values.message,
+                    'Intended intake': values.intendedIntake ?? '',
+                    'Study level': values.studyLevel ?? '',
+                    'Interested university or subject': values.interestedUniversityOrSubject ?? '',
+                    'Korean proficiency': values.koreanProficiency ?? '',
+                    'Current university': values.currentUniversity ?? '',
+                    'Transfer interest': values.transferInterest ?? '',
+                    'Country of residence': values.countryOfResidence ?? '',
                     'Privacy consent': values.privacyConsent ? 'Yes' : 'No',
                     Website: values.website,
                     'Form source': 'contact_page',
@@ -102,11 +154,23 @@ export function ContactPage() {
                 }
               })}
             >
-              <div className="space-y-2"><Label>Name</Label><Input required {...register('name', { required: true })} /></div>
-              <div className="space-y-2"><Label>Email</Label><Input type="email" required {...register('email', { required: true })} /></div>
-              <div className="space-y-2"><Label>Phone</Label><Input {...register('phone')} /></div>
-              <div className="space-y-2"><Label>Subject</Label><Input required {...register('subject', { required: true })} /></div>
-              <div className="space-y-2"><Label>Message</Label><Textarea required {...register('message', { required: true })} /></div>
+              <div className="space-y-2"><Label htmlFor="contact-name">Name</Label><Input id="contact-name" required {...register('name', { required: true })} /></div>
+              <div className="space-y-2"><Label htmlFor="contact-email">Email</Label><Input id="contact-email" type="email" required {...register('email', { required: true })} /></div>
+              <div className="space-y-2"><Label htmlFor="contact-phone">Phone</Label><Input id="contact-phone" {...register('phone')} /></div>
+              <div className="space-y-2"><Label htmlFor="contact-subject">Subject</Label><Input id="contact-subject" required {...register('subject', { required: true })} /></div>
+              <div className="space-y-2"><Label htmlFor="contact-message">Message</Label><Textarea id="contact-message" required {...register('message', { required: true })} /></div>
+              <details className="rounded-lg border px-4">
+                <summary className="cursor-pointer py-3 text-sm font-medium">Optional admissions details</summary>
+                <div className="grid gap-4 pb-4 sm:grid-cols-2">
+                  <div className="space-y-2"><Label htmlFor="contact-intake">Intended intake</Label><Input id="contact-intake" placeholder="e.g. March 2027" {...register('intendedIntake')} /></div>
+                  <div className="space-y-2"><Label htmlFor="contact-study-level">Study level</Label><Input id="contact-study-level" placeholder="e.g. undergraduate, master's, language" {...register('studyLevel')} /></div>
+                  <div className="space-y-2 sm:col-span-2"><Label htmlFor="contact-university-subject">Interested university or subject</Label><Input id="contact-university-subject" {...register('interestedUniversityOrSubject')} /></div>
+                  <div className="space-y-2"><Label htmlFor="contact-korean-level">Korean language proficiency</Label><Input id="contact-korean-level" placeholder="e.g. TOPIK level or beginner" {...register('koreanProficiency')} /></div>
+                  <div className="space-y-2"><Label htmlFor="contact-current-university">Current university, if applicable</Label><Input id="contact-current-university" {...register('currentUniversity')} /></div>
+                  <div className="space-y-2"><Label htmlFor="contact-transfer-interest">Interested in transfer admission?</Label><Input id="contact-transfer-interest" placeholder="Yes, no, or exploring" {...register('transferInterest')} /></div>
+                  <div className="space-y-2"><Label htmlFor="contact-country">Country of residence</Label><Input id="contact-country" autoComplete="country-name" {...register('countryOfResidence')} /></div>
+                </div>
+              </details>
               <div className="sr-only" aria-hidden="true">
                 <Label htmlFor="contact-website">Leave this field empty</Label>
                 <Input id="contact-website" tabIndex={-1} autoComplete="off" {...register('website')} />
@@ -141,8 +205,21 @@ export function ContactPage() {
             loading="lazy"
           />
           <p className="text-sm text-muted-foreground">For a study-plan inquiry, you can also <Link to="/book-consultation" className="text-accent underline">request a consultation</Link>.</p>
+          <Card className="transition-shadow hover:shadow-md">
+            <CardHeader><CardTitle>Connect With Sanshin Global Education</CardTitle></CardHeader>
+            <CardContent>
+              <p className="text-sm leading-relaxed text-muted-foreground">Follow our Facebook page for university admissions information, upcoming intake announcements, scholarship updates, and practical tips for studying in South Korea.</p>
+              <a href={facebookUrl} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition hover:-translate-y-0.5 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                <FacebookMark className="h-4 w-4" /> Follow Us on Facebook <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </a>
+            </CardContent>
+          </Card>
         </div>
       </div>
+      <section className="container pb-12 text-center">
+        <h2 className="font-heading text-2xl font-bold">Your Korean Study Journey Starts With a Conversation.</h2>
+        <p className="mt-2 text-sm text-muted-foreground">Share your questions and goals; our team can help you identify the official requirements to review next.</p>
+      </section>
     </div>
   )
 }

@@ -10,7 +10,7 @@ export const CONTENT_DEFAULTS: Omit<SiteContent, 'id'>[] = [
   { key: 'contact.email', value: DEFAULT_CONTACT_EMAIL, group: 'contact', label: 'Email' },
   { key: 'contact.address', value: '', group: 'contact', label: 'Address' },
   { key: 'contact.hours', value: '', group: 'contact', label: 'Office hours' },
-  { key: 'social.facebook', value: '', group: 'social', label: 'Facebook URL' },
+  { key: 'social.facebook', value: 'https://www.facebook.com/Sanshinglobaleducation/', group: 'social', label: 'Facebook URL' },
   { key: 'social.instagram', value: '', group: 'social', label: 'Instagram URL' },
   { key: 'social.linkedin', value: '', group: 'social', label: 'LinkedIn URL' },
   { key: 'social.youtube', value: '', group: 'social', label: 'YouTube URL' },

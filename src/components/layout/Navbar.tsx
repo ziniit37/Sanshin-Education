@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils'
 
 const links = [
   { to: '/study-in-korea', label: 'Study in Korea' },
+  { to: '/admissions', label: 'Admissions' },
   { to: '/universities', label: 'Universities' },
   { to: '/programs', label: 'Programs' },
   { to: '/services', label: 'Services' },
@@ -48,7 +49,7 @@ export function Navbar() {
     <header className="sticky top-0 z-40 glass">
       <div className="container flex h-16 items-center justify-between gap-4">
         <Logo />
-        <nav className="hidden items-center gap-4 xl:flex">
+        <nav className="hidden items-center gap-4 2xl:flex">
           <NavItems />
         </nav>
         <div className="flex items-center gap-2">
@@ -71,7 +72,7 @@ export function Navbar() {
           </Button>
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="xl:hidden" aria-label="Open menu">
+              <Button variant="ghost" size="icon" className="2xl:hidden" aria-label="Open menu">
                 <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>

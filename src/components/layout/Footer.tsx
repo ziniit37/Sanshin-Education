@@ -1,3 +1,4 @@
+import { FacebookMark } from '@/components/FacebookMark'
 import { Link } from '@/lib/navigation'
 import { Logo } from '@/components/Logo'
 import { useContent } from '@/contexts/SiteContentProvider'
@@ -16,14 +17,15 @@ function displayContact(value: string) {
 
 export function Footer() {
   const { get } = useContent()
-  const email = displayContact(get('contact.email') || DEFAULT_CONTACT_EMAIL)
-  const phone = displayContact(get('contact.phone') || DEFAULT_CONTACT_PHONE)
+  const email = displayContact(get('contact.email')) || DEFAULT_CONTACT_EMAIL
+  const phone = displayContact(get('contact.phone')) || DEFAULT_CONTACT_PHONE
   const address = displayContact(get('contact.address'))
   const hours = displayContact(get('contact.hours'))
+  const facebookUrl = get('social.facebook').trim() || 'https://www.facebook.com/Sanshinglobaleducation/'
   const socialLinks = [
     ['Instagram', get('social.instagram')],
     ['LinkedIn', get('social.linkedin')],
-    ['Facebook', get('social.facebook')],
+    ['Facebook', facebookUrl],
   ].filter(([, url]) => /^https?:\/\//i.test(url))
 
   return (
@@ -40,6 +42,8 @@ export function Footer() {
             <li><Link to="/universities">Universities</Link></li>
             <li><Link to="/programs">Programs</Link></li>
             <li><Link to="/scholarships">Scholarships</Link></li>
+            <li><Link to="/visa-guide">Student visa</Link></li>
+            <li><Link to="/study-in-korea/costs">Study costs</Link></li>
             <li><Link to="/student-life">Student life</Link></li>
             <li><Link to="/resources">Resources</Link></li>
           </ul>
@@ -66,7 +70,11 @@ export function Footer() {
           {socialLinks.length > 0 ? (
             <ul className="mt-3 flex flex-wrap gap-3 text-sm">
               {socialLinks.map(([label, url]) => (
-                <li key={label}><a href={url} target="_blank" rel="noreferrer">{label}</a></li>
+                <li key={label}>
+                  <a href={url} target="_blank" rel="noopener noreferrer" aria-label={label === 'Facebook' ? 'Follow Sanshin Global Education on Facebook' : label} className="inline-flex items-center gap-1 transition hover:text-primary-foreground">
+                    {label === 'Facebook' ? <FacebookMark className="h-4 w-4" /> : null}{label}
+                  </a>
+                </li>
               ))}
             </ul>
           ) : null}
